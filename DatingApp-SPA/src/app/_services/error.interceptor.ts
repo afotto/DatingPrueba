@@ -32,7 +32,7 @@ export class ErrorInterceptor implements HttpInterceptor {
                     return throwError(modalStateError || serverError || 'Server Error');
                 }
             })
-        )
+        );
     }
 
 }
