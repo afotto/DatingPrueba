@@ -22,6 +22,7 @@ import { MemberCardComponent } from './member/member-list/member-card/member-car
 import { JwtModule } from '@auth0/angular-jwt';
 import { MemberDetailComponent } from './member/member-detail/member-detail.component';
 import { MemberDatailResolver } from './_resolvers/member-detail.resolver';
+import { MemberEditComponent } from './member/member-edit/member-edit.component';
 
 
 export function tokenGetter(){
@@ -46,7 +47,8 @@ export class CustomHammerConfig extends HammerGestureConfig {
       ListComponent,
       MessagesComponent,
       MemberCardComponent,
-      MemberDetailComponent
+      MemberDetailComponent,
+      MemberEditComponent
    ],
    imports: [
       BrowserModule,

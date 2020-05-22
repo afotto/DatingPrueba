@@ -1,10 +1,12 @@
-using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using AutoMapper;
 using DatingApp.API.Data;
 using DatingApp.API.Dtos;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using System;
 
 namespace DatingApp.API.Controllers
 {
@@ -35,6 +37,24 @@ namespace DatingApp.API.Controllers
             var user = await _repo.GetUser(id);
             var userToReturn = _mapper.Map<UserForDetailledDto>( user);
             return Ok(userToReturn);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateUser(int id, UserForUpdateDto userForUpdateDto) 
+        {
+            // Valido que el usuario que está enviando el update sea el dueño del token
+            if (id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
+            
+            var userForRepo = await _repo.GetUser(id);
+
+            _mapper.Map(userForUpdateDto, userForRepo);
+
+            if (await _repo.SaveAll())
+                return NoContent();
+            
+            throw new Exception($"El usuario con {id} no pudo modificarse");
+
         }
 
     }
